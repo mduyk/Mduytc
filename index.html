@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Proxy mduyk | Premium Shop</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        body { margin: 0; font-family: 'Inter', sans-serif; background: #020617; color: white; overflow-x: hidden; background-image: radial-gradient(circle at top, #1e293b 0%, #020617 100%); min-height: 100vh; user-select: none; -webkit-tap-highlight-color: transparent; }
+        #splash-screen { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 10000; }
+        .logo-mduyk { font-family: 'Orbitron', sans-serif; font-size: 50px; color: #22c55e; letter-spacing: 10px; text-shadow: 0 0 20px #22c55e; animation: zoom 1.5s ease-out; }
+        @keyframes zoom { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
+        #authPage { position: fixed; inset: 0; background: #0b1220; display: flex; justify-content: center; align-items: center; z-index: 9999; }
+        .auth-box { background: rgba(17, 24, 39, 0.8); padding: 30px; border-radius: 20px; width: 320px; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .auth-box h3 { font-family: 'Orbitron'; color: #22c55e; text-align: center; margin-bottom: 15px; font-size: 16px; letter-spacing: 1px; }
+        .auth-box input { width: 100%; padding: 12px; margin: 8px 0; border: none; border-radius: 10px; background: #1f2937; color: white; outline: none; box-sizing: border-box; font-size: 16px; }
+        .auth-box button { width: 100%; padding: 12px; border: none; border-radius: 10px; background: #22c55e; color: #052e16; font-weight: bold; cursor: pointer; margin-top: 5px; }
+        .header { padding: 15px; background: rgba(15, 23, 42, 0.9); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #1e293b; display: flex; justify-content: space-between; align-items: center; }
+        .logo-container { display: flex; flex-direction: column; }
+        .logo { font-family: 'Orbitron'; color: #22c55e; font-weight: bold; font-size: 18px; }
+        #runtime { font-size: 11px; color: #22c55e; font-family: 'Orbitron', monospace; margin-top: 4px; letter-spacing: 1px; }
+        .menu { display: flex; justify-content: center; gap: 10px; padding: 15px; background: #020617; }
+        .menu button { padding: 10px 20px; border: none; border-radius: 25px; background: #1e293b; color: white; font-weight: 600; cursor: pointer; font-size: 13px; }
+        .menu button.active { background: #22c55e; color: #052e16; }
+        .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; padding: 15px; }
+        .box { background: #1e293b; padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.3s; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .box:hover { border-color: #22c55e; }
+        .price { color: #22c55e; font-weight: 800; font-size: 18px; display: block; margin: 8px 0; }
+        #pay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 11000; padding: 20px; }
+        .pay-box { background: #1e293b; padding: 25px; border-radius: 20px; width: 100%; max-width: 320px; border: 1px solid #22c55e; }
+        .pay-box input { width: 100%; padding: 12px; border-radius: 10px; border: none; background: #0f172a; color: white; margin-top: 10px; box-sizing: border-box; }
+        .history { padding: 15px; margin-bottom: 50px; }
+        .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .btn-clear { background: #ef4444; color: white; border: none; padding: 5px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: bold; }
+        .item { background: #111827; margin: 10px 0; padding: 15px; border-radius: 12px; font-size: 14px; border-left: 4px solid #22c55e; }
+        .note { margin: 15px 0; color: #facc15; font-size: 12px; font-weight: bold; line-height: 1.4; }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+<div id="splash-screen">
+    <div class="logo-mduyk">MDUYK</div>
+</div>
+
+<div id="authPage" style="display:none">
+    <div class="auth-box">
+        <h3>ĐĂNG KÝ</h3>
+        <input id="regUser" placeholder="Tài khoản" autocomplete="off" spellcheck="false">
+        <input id="regPass" type="password" placeholder="Mật khẩu">
+        <button onclick="register()">ĐĂNG KÝ NGAY</button>
+        <hr style="opacity:0.1; margin: 20px 0;">
+        <h3>ĐĂNG NHẬP</h3>
+        <input id="logUser" placeholder="Tài khoản" autocomplete="off" spellcheck="false">
+        <input id="logPass" type="password" placeholder="Mật khẩu">
+        <button onclick="login()">VÀO CỬA HÀNG</button>
+    </div>
+</div>
+
+<div id="main" style="display:none">
+    <div class="header">
+        <div class="logo-container">
+            <div class="logo">Proxy mduyk</div>
+            <div id="runtime">00:00:00</div>
+        </div>
+        <div style="font-size: 12px; color: #f87171; cursor: pointer; font-weight: bold;" onclick="location.reload()">Đăng xuất</div>
+    </div>
+    <div class="menu">
+        <button id="btnProxy" class="active" onclick="showTab('proxy')">Proxy</button>
+        <button id="btnKc" onclick="showTab('kc')">Nạp KC</button>
+    </div>
+    <div id="proxyTab" class="container">
+        <div class="box" onclick="openPay('Proxy Gói Tuần', '40.000đ')">
+            <h3>Gói Tuần</h3><span class="price">40.000đ</span><small style="color: #64748b;">Mua ngay</small>
+        </div>
+        <div class="box" onclick="openPay('Proxy Gói Tháng', '80.000đ')">
+            <h3>Gói Tháng</h3><span class="price">80.000đ</span><small style="color: #64748b;">Mua ngay</small>
+        </div>
+        <div class="box" onclick="openPay('Proxy Gói Năm', '180.000đ')">
+            <h3>Gói Năm</h3><span class="price">180.000đ</span><small style="color: #64748b;">Mua ngay</small>
+        </div>
+    </div>
+    <div id="kcTab" class="container" style="display:none">
+        <div class="box" onclick="openPay('113 KC', '19.800đ')"><h3>113 KC</h3><p class="price">19.800đ</p></div>
+        <div class="box" onclick="openPay('283 KC', '48.000đ')"><h3>283 KC</h3><p class="price">48.000đ</p></div>
+        <div class="box" onclick="openPay('566 KC', '97.000đ')"><h3>566 KC</h3><p class="price">97.000đ</p></div>
+        <div class="box" onclick="openPay('1132 KC', '197.000đ')"><h3>1132 KC</h3><p class="price">197.000đ</p></div>
+        <div class="box" onclick="openPay('2830 KC', '490.000đ')"><h3>2830 KC</h3><p class="price">490.000đ</p></div>
+    </div>
+    <div class="history">
+        <div class="history-header">
+            <h3 style="font-family:'Orbitron'; font-size: 16px; color: #22c55e; margin:0;">LỊCH SỬ GIAO DỊCH</h3>
+            <button class="btn-clear" onclick="clearHistory()">Xóa lịch sử</button>
+        </div>
+        <div id="historyBox"></div>
+    </div>
+</div>
+
+<div id="pay">
+    <div class="pay-box">
+        <h3 style="color:#22c55e; text-align:center;">THANH TOÁN</h3>
+        <p id="product" style="text-align:center; font-weight:bold; margin: 10px 0;"></p>
+        <input id="gameID" placeholder="Nhập ID game">
+        <div style="background:#0f172a; padding:15px; border-radius:12px; margin-top:10px;">
+            <p style="margin:0 0 5px 0;"><b>MB BANK</b></p>
+            <p style="margin:0 0 5px 0;">CAO MINH DUY</p>
+            <p style="color:#22c55e; font-size:18px; margin:0;"><b>0588807300000</b></p>
+        </div>
+        <div id="randomNote" class="note"></div>
+        <button onclick="confirmPay()" style="background:#22c55e; width:100%; padding:12px; border:none; border-radius:10px; font-weight:bold; margin-top:15px; color:#052e16; cursor:pointer;">EM BANK RỒI Ạ</button>
+        <button onclick="closePay()" style="background:none; border:none; color:#64748b; width:100%; margin-top:10px; cursor:pointer;">Hủy giao dịch</button>
+    </div>
+</div>
+
+<script>
+    (function() {
+        const kill = () => {
+            window.stop();
+            document.documentElement.innerHTML = ""; 
+            document.body.innerHTML = "";
+            const msg = document.createElement('div');
+            msg.setAttribute('style', 'height:100vh;background:#000;color:#ef4444;display:flex;justify-content:center;align-items:center;font-family:Orbitron;text-align:center;position:fixed;inset:0;z-index:9999999;');
+            msg.innerHTML = "<div><h1>SECURITY BREACH</h1><p>Hệ thống đã tự hủy mã nguồn để bảo mật!</p><p style='color:#64748b'>F12 đã bị vô hiệu hóa. Vui lòng tắt và mở lại link.</p></div>";
+            document.documentElement.appendChild(msg);
+            sessionStorage.setItem('mduyk_locked', 'true');
+            setInterval(() => { console.clear(); debugger; }, 1);
+        };
+
+        if (sessionStorage.getItem('mduyk_locked')) kill();
+
+        const detector = function() {
+            const devtools = /./;
+            devtools.toString = function() { kill(); return ''; };
+            console.log('%c', devtools);
+        };
+
+        // Chạy bảo mật sau khi web đã load xong 3 giây để tránh lỗi văng sớm
+        setTimeout(() => {
+            setInterval(() => {
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                if (!isMobile) {
+                    const threshold = 200; // Tăng ngưỡng để tránh văng nhầm trên các màn hình lạ
+                    const widthDiff = window.outerWidth - window.innerWidth > threshold;
+                    const heightDiff = window.outerHeight - window.innerHeight > threshold;
+                    if (widthDiff || heightDiff) kill();
+                }
+                detector();
+            }, 1000);
+        }, 3000);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key)) || (e.ctrlKey && e.key === 'u')) {
+                e.preventDefault();
+                kill();
+            }
+        });
+    })();
+
+    const START_TIME = new Date('2026-04-13T08:00:00');
+    function updateTimer() {
+        const diff = Math.floor((new Date() - START_TIME) / 1000);
+        const h = Math.floor(diff / 3600).toString().padStart(2, '0');
+        const m = Math.floor((diff % 3600) / 60).toString().padStart(2, '0');
+        const s = (diff % 60).toString().padStart(2, '0');
+        document.getElementById('runtime').innerText = `${h}:${m}:${s}`;
+    }
+    setInterval(updateTimer, 1000);
+
+    window.onload = () => {
+        if (!sessionStorage.getItem('mduyk_locked')) {
+            setTimeout(() => {
+                document.getElementById('splash-screen').style.display = 'none';
+                document.getElementById('authPage').style.display = 'flex';
+            }, 2000);
+        }
+    };
+
+    function register() {
+        const u = document.getElementById("regUser").value.trim();
+        const p = document.getElementById("regPass").value.trim();
+        if(!u || !p) return alert("điền cho đúng vào k đúng thì thôi-)");
+        localStorage.setItem("m_user", u);
+        localStorage.setItem("m_pass", p);
+        alert("Đăng ký thành công! cút vào đi e");
+    }
+
+    function login() {
+        const u = document.getElementById("logUser").value.trim();
+        const p = document.getElementById("logPass").value.trim();
+        if(u === localStorage.getItem("m_user") && p === localStorage.getItem("m_pass") && u !== "") {
+            document.getElementById("authPage").style.display = "none";
+            document.getElementById("main").style.display = "block";
+            loadHistory();
+        } else {
+            alert("m có bt nhập không hay chx đăng ký?");
+        }
+    }
+
+    function showTab(t) {
+        document.getElementById("proxyTab").style.display = (t === "proxy") ? "grid" : "none";
+        document.getElementById("kcTab").style.display = (t === "kc") ? "grid" : "none";
+        document.getElementById("btnProxy").className = (t === "proxy") ? "active" : "";
+        document.getElementById("btnKc").className = (t === "kc") ? "active" : "";
+    }
+
+    let currentProduct = "";
+    function openPay(name, price) {
+        currentProduct = name + " (" + price + ")";
+        document.getElementById("product").innerText = currentProduct;
+        document.getElementById("pay").style.display = "flex";
+        setRandomNote();
+    }
+
+    function setRandomNote() {
+        const notes = ["⚠ Nhập đúng ID game vào nội dung chuyển khoản", "⚠ ghi đúng cái id vào ghi chú bank sai id quên ghi vào ghi chú thì tự chịu k hoàn ", "⚠ GHI cái ID vào ghi chú bank đó k là mất tiền tự chịu", "⚠ nhập cái id vào cái ghi chú bank đó r t duyệt cho"];
+        document.getElementById("randomNote").innerText = notes[Math.floor(Math.random() * notes.length)];
+    }
+
+    function closePay() {
+        document.getElementById("pay").style.display = "none";
+        document.getElementById("gameID").value = "";
+    }
+
+    function confirmPay() {
+        const id = document.getElementById("gameID").value.trim();
+        if(!id) return alert("Nhập ID game!");
+        const h = JSON.parse(localStorage.getItem("m_hist") || "[]");
+        h.push({ product: currentProduct, id: id, time: new Date().toLocaleString("vi-VN") });
+        localStorage.setItem("m_hist", JSON.stringify(h));
+        closePay();
+        loadHistory();
+        setTimeout(() => {
+            alert("Đã ghi nhận! Proxy nhắn Zalo Admin, KC đợi 10 phút.");
+            window.location.href = "https://zalo.me/032833706";
+        }, 500);
+    }
+
+    function loadHistory() {
+        const h = JSON.parse(localStorage.getItem("m_hist") || "[]");
+        const box = document.getElementById("historyBox");
+        if(h.length === 0) {
+            box.innerHTML = `<p style="color:#64748b; text-align:center; font-size:13px;">mua hàng ngay cho taooo.</p>`;
+            return;
+        }
+        box.innerHTML = h.slice().reverse().map(i => `
+            <div class="item">
+                <b style="color:#22c55e">${i.product}</b><br>
+                <span style="color:#cbd5e1">ID Game: ${i.id}</span><br>
+                <small style="color:#64748b">${i.time} - <span style="color:#fbbf24">Đang xử lý</span></small>
+            </div>
+        `).join("");
+    }
+
+    function clearHistory() {
+        if(confirm("m muốn xoá à")) {
+            localStorage.removeItem("m_hist");
+            loadHistory();
+        }
+    }
+</script>
+</body>
+</html>
